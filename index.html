@@ -26,8 +26,19 @@
   </label>
 
   <input type="text" id="locationName" placeholder="Enter city name" autocomplete="off" />
-  <ul id="suggestions" class="autocomplete-list"></ul>
+
+<div class="action-buttons">
+  <button onclick="startVoiceSearch()">🎤</button>
   <button onclick="getweather()">Get Weather</button>
+</div>
+
+<ul id="suggestions" class="autocomplete-list"></ul>
+
+<div id="recent-searches-container">
+  <h4>Recent Searches</h4>
+  <ul id="recent-searches"></ul>
+</div>
+
 
 <div id="loading" class="spinner" style="display:none;"></div>
 <div id="weatherContainer">
