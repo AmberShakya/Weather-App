@@ -208,3 +208,37 @@ button:hover {
   transition: background-color 0.2s ease;
 }
 
+@media (max-width: 600px) {
+  #weatherContainer {
+    display: flex;
+    flex-direction: column !important;
+    flex-wrap: nowrap !important;
+    align-items: center;
+    width: 100vw;
+    padding: 0 10px;
+    box-sizing: border-box;
+  }
+
+  #output,
+  #forecastContainer {
+    width: 100% !important;
+    max-width: 100% !important;
+    margin: 10px 0;
+  }
+
+  .forecast-row {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .forecast-card {
+    width: 80%;
+    max-width: 300px;
+    margin: 10px auto;
+  }
+
+  input[type="text"],
+  .autocomplete-list {
+    width: 90%;
+  }
+}
