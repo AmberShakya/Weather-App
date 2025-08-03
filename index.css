@@ -70,8 +70,6 @@ button {
   width: 250px;
   background: white;
   color: black;
-  position: absolute;
-  z-index: 1000;
   border-radius: 5px;
 }
 
@@ -242,3 +240,42 @@ button:hover {
     width: 90%;
   }
 }
+.action-buttons {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  margin-top: 10px;
+}
+
+#recent-searches-container {
+  margin-top: 10px;
+  text-align: center;
+  color: var(--text-color);
+}
+
+#recent-searches-container h4 {
+  font-size: 1rem;
+  margin-bottom: 8px;
+}
+
+#recent-searches {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 10px;
+  list-style: none;
+  padding: 0;
+}
+
+.recent-search-item {
+  background-color: rgba(255, 255, 255, 0.1);
+  padding: 6px 12px;
+  border-radius: 16px;
+  cursor: pointer;
+  transition: background 0.3s;
+}
+
+.recent-search-item:hover {
+  background-color: rgba(255, 255, 255, 0.2);
+}
+
