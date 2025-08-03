@@ -4,11 +4,31 @@ const loading = document.getElementById('loading');
 const output = document.getElementById('output');
 const forecastContainer = document.getElementById('forecastContainer');
 
-// Auto-suggestions
+// === VOICE INPUT ===
+function startVoiceSearch() {
+  if (!('webkitSpeechRecognition' in window)) {
+    alert('Voice recognition not supported');
+    return;
+  }
+
+  const recognition = new webkitSpeechRecognition();
+  recognition.lang = 'en-US';
+  recognition.start();
+
+  recognition.onresult = (event) => {
+    const transcript = event.results[0][0].transcript;
+    input.value = transcript;
+    getweather();
+  };
+}
+
+
+// === AUTOCOMPLETE ===
 input.addEventListener('input', async () => {
   const query = input.value.trim();
   if (query.length < 2) {
     suggestionsList.innerHTML = '';
+    renderRecentSearches(); // Show recent on blank
     return;
   }
 
@@ -38,13 +58,15 @@ input.addEventListener('input', async () => {
   }
 });
 
-// Theme toggle
+// === DARK MODE ===
 document.getElementById('themeToggle').addEventListener('change', () => {
   document.body.classList.toggle('dark');
 });
 
-// Auto weather by geolocation or last city
+// === ON PAGE LOAD ===
 window.addEventListener('DOMContentLoaded', () => {
+  renderRecentSearches();
+
   const lastCity = localStorage.getItem('lastCity');
   if (lastCity) {
     input.value = lastCity;
@@ -58,17 +80,20 @@ window.addEventListener('DOMContentLoaded', () => {
       getweather();
     });
   }
+  renderRecentSearches();
 });
 
+// === GET WEATHER ===
 window.getweather = async function () {
   const location = input.value.trim();
   if (!location) return;
   localStorage.setItem('lastCity', location);
+  updateRecentSearches(location);
 
   // Reset animations
   output.classList.remove('fade-in');
   forecastContainer.classList.remove('fade-in');
-  void output.offsetWidth; // Force reflow
+  void output.offsetWidth;
   void forecastContainer.offsetWidth;
 
   output.style.display = 'none';
@@ -76,7 +101,6 @@ window.getweather = async function () {
   loading.style.display = 'block';
 
   try {
-    // Get current weather
     const weatherRes = await fetch(`https://api.openweathermap.org/data/2.5/weather?q=${location}&appid=98c5e5c671f25d157c42acfabb13b4d5&units=metric`);
     const weather = await weatherRes.json();
 
@@ -101,9 +125,8 @@ window.getweather = async function () {
       <p><b>Humidity:</b> ${weather.main.humidity}%</p>
       <p><b>Condition:</b> ${weather.weather[0].description}</p>
     `;
-    output.classList.add('fade-in'); 
+    output.classList.add('fade-in');
 
-    // 3-day forecast
     const forecastRes = await fetch(`https://api.openweathermap.org/data/2.5/forecast?q=${location}&cnt=24&appid=98c5e5c671f25d157c42acfabb13b4d5&units=metric`);
     const forecast = await forecastRes.json();
 
@@ -128,3 +151,33 @@ window.getweather = async function () {
     loading.textContent = 'Failed to load weather data.';
   }
 };
+
+// === RECENT SEARCHES LOGIC ===
+function updateRecentSearches(city) {
+  let searches = JSON.parse(localStorage.getItem('recentSearches')) || [];
+  searches = searches.filter(item => item !== city);
+  searches.unshift(city);
+  if (searches.length > 5) searches.pop();
+  localStorage.setItem('recentSearches', JSON.stringify(searches));
+  renderRecentSearches();
+}
+
+function renderRecentSearches() {
+  const recentList = document.getElementById('recent-searches');
+  if (!recentList) return;
+
+  const searches = JSON.parse(localStorage.getItem('recentSearches')) || [];
+  recentList.innerHTML = ''; // Clear old entries
+
+  searches.forEach(city => {
+    const li = document.createElement('li');
+    li.textContent = city;
+    li.classList.add('recent-search-item');
+    li.addEventListener('click', () => {
+      input.value = city;
+      getweather();
+    });
+    recentList.appendChild(li);
+  });
+}
+
