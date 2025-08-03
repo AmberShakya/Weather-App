@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Weather App</title>
+  <link rel="stylesheet" href="index.css" />
+  <script>
+  if ('serviceWorker' in navigator) {
+    window.addEventListener('load', () => {
+      navigator.serviceWorker.register('./service-worker.js')
+        .then(reg => console.log('Service Worker registered:', reg.scope))
+        .catch(err => console.error('Service Worker registration failed:', err));
+    });
+  }
+</script>
+
+</head>
+<body>
+  <h1>Weather App</h1>
+  <label class="toggle-switch">
+    <input type="checkbox" id="themeToggle" />
+    <span class="slider"></span>
+  </label>
+
+  <input type="text" id="locationName" placeholder="Enter city name" autocomplete="off" />
+  <ul id="suggestions" class="autocomplete-list"></ul>
+  <button onclick="getweather()">Get Weather</button>
+
+<div id="loading" class="spinner" style="display:none;"></div>
+<div id="weatherContainer">
+  <div id="output"></div>
+  <div id="forecastContainer"></div>
+</div>
+
+
+  <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+  <script src="index.js"></script>
+</body>
+</html>
