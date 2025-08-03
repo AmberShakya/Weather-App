@@ -30,15 +30,13 @@ A sleek, responsive Progressive Web App (PWA) that shows real-time weather updat
 
 ---
 
-## 📸 Screenshots
-
-### 💻 Desktop View  
-![Desktop View](assets/screenshot-desktop.png)
-
-### 📱 Mobile View  
-![Mobile View](assets/screenshot-mobile.png)
-
----
-
 ## 🗂️ Project Structure
+
+Weather-App/
+├── index.html # Main HTML file
+├── index.css # Stylesheet with responsive design
+├── index.js # Weather + autocomplete logic
+├── service-worker.js # Offline caching
+├── favicon.ico # App icon
+└── assets/
 
