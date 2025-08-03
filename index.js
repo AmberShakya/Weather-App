@@ -77,7 +77,7 @@ window.getweather = async function () {
 
   try {
     // Get current weather
-    const weatherRes = await fetch(`/api/getweather?location=${location}`);
+    const weatherRes = await fetch(`https://api.openweathermap.org/data/2.5/weather?q=${location}&appid=98c5e5c671f25d157c42acfabb13b4d5&units=metric`);
     const weather = await weatherRes.json();
 
     loading.style.display = 'none';
@@ -101,7 +101,7 @@ window.getweather = async function () {
       <p><b>Humidity:</b> ${weather.main.humidity}%</p>
       <p><b>Condition:</b> ${weather.weather[0].description}</p>
     `;
-    output.classList.add('fade-in'); // 👈 animate
+    output.classList.add('fade-in'); 
 
     // 3-day forecast
     const forecastRes = await fetch(`https://api.openweathermap.org/data/2.5/forecast?q=${location}&cnt=24&appid=98c5e5c671f25d157c42acfabb13b4d5&units=metric`);
@@ -120,7 +120,7 @@ window.getweather = async function () {
         `;
       }).join('')}</div>`;
       forecastContainer.style.display = 'block';
-      forecastContainer.classList.add('fade-in'); // 👈 animate
+      forecastContainer.classList.add('fade-in'); 
     }
 
   } catch (err) {
